@@ -15,9 +15,9 @@ The beneficiaries are product manufacturers and its consumers. Consumers will be
 
 ## Data sources
 
-### 1. Collection of reviews : http://snap.stanford.edu/data/web-Amazon-links.html
-### 2. Amazon Product Advertising API for product reviews
-### 3. eBay Developer API for product reviews
+#### 1. Collection of reviews : http://snap.stanford.edu/data/web-Amazon-links.html
+#### 2. Amazon Product Advertising API for product reviews
+#### 3. eBay Developer API for product reviews
 
 ## Proposed Solution
 
@@ -25,14 +25,14 @@ For a given product we plan to identify potential features, which would involve 
 
 ## Specific Techniques
 
-### 1. Feature extraction: Using shallow dependency parsing.
-### 2. Anaphora resolution: Either on our own or using open source tools like BART.
-### 3. Synonym Identification: Using WordNet/DBPedia.
-### 4. Feature Selection: Rank and select features using a relevancy algorithm like tf-idf.
-### 5. Sentiment classification of features: Using perceptron based on training data.
+#### 1. Feature extraction: Using shallow dependency parsing.
+#### 2. Anaphora resolution: Either on our own or using open source tools like BART.
+#### 3. Synonym Identification: Using WordNet/DBPedia.
+#### 4. Feature Selection: Rank and select features using a relevancy algorithm like tf-idf.
+#### 5. Sentiment classification of features: Using perceptron based on training data.
 
 ## Evaluation 
 
 The system is evaluated on two aspects:
-### 1. Extraction of relevant features from product reviews
-### 2. Identifying the aggregated sentiment for each of the extracted features
+#### 1. Extraction of relevant features from product reviews
+#### 2. Identifying the aggregated sentiment for each of the extracted features
