@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="Feature Level Opinion Mining from Product Reviews : ">
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Feature Level Opinion Mining from Product Reviews</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/akhilram/product-profiler">View on GitHub</a>
+
+          <h1 id="project_title">Feature Level Opinion Mining from Product Reviews</h1>
+          <h2 id="project_tagline"></h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/akhilram/product-profiler/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/akhilram/product-profiler/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>
+<a id="productprofiler" class="anchor" href="#productprofiler" aria-hidden="true"><span class="octicon octicon-link"></span></a>ProductProfiler</h1>
+
+<h2>
+<a id="project-description" class="anchor" href="#project-description" aria-hidden="true"><span class="octicon octicon-link"></span></a>Project Description</h2>
+
+<p>Product reviews are the most influential source of information that help consumers in informed decision making. However, finding opinion about specific features of a product is often time consuming. Our project aims to extract relevant features of a product from its reviews and provide a consolidated opinion on each of them. For example, the system would provide an aggregated sentiment about individual features like audio, display, battery life for a mobile phone model without the user having to read all the reviews.</p>
+
+<h2>
+<a id="challenges" class="anchor" href="#challenges" aria-hidden="true"><span class="octicon octicon-link"></span></a>Challenges</h2>
+
+<p>The overall sentiment about a product can be easily determined using text classification approaches or by rating 
+aggregation. However, the challenges are identifying the most relevant features from customer reviews and extracting feature level opinions.</p>
+
+<h2>
+<a id="beneficiaries" class="anchor" href="#beneficiaries" aria-hidden="true"><span class="octicon octicon-link"></span></a>Beneficiaries</h2>
+
+<p>The beneficiaries are product manufacturers and its consumers. Consumers will benefit from a granular feature level opinion which will aid them in quick and effortless decision making. Manufacturers will get a summarized feature level.</p>
+
+<h2>
+<a id="data-sources" class="anchor" href="#data-sources" aria-hidden="true"><span class="octicon octicon-link"></span></a>Data sources</h2>
+
+<h5>
+<a id="1-collection-of-reviews--httpsnapstanfordedudataweb-amazon-linkshtml" class="anchor" href="#1-collection-of-reviews--httpsnapstanfordedudataweb-amazon-linkshtml" aria-hidden="true"><span class="octicon octicon-link"></span></a>1. Collection of reviews : <a href="http://snap.stanford.edu/data/web-Amazon-links.html">http://snap.stanford.edu/data/web-Amazon-links.html</a>
+</h5>
+
+<h5>
+<a id="2-amazon-product-advertising-api-for-product-reviews" class="anchor" href="#2-amazon-product-advertising-api-for-product-reviews" aria-hidden="true"><span class="octicon octicon-link"></span></a>2. Amazon Product Advertising API for product reviews</h5>
+
+<h5>
+<a id="3-ebay-developer-api-for-product-reviews" class="anchor" href="#3-ebay-developer-api-for-product-reviews" aria-hidden="true"><span class="octicon octicon-link"></span></a>3. eBay Developer API for product reviews</h5>
+
+<h2>
+<a id="proposed-solution" class="anchor" href="#proposed-solution" aria-hidden="true"><span class="octicon octicon-link"></span></a>Proposed Solution</h2>
+
+<p>For a given product we plan to identify potential features, which would involve resolution of anaphora like “it” and synonym identification for features. A ranking algorithm will then extract the most relevant set of features. This will be followed by clustering of comments about each feature. Finally an aggregated sentiment analysis for each feature will be performed based on these comments.</p>
+
+<h2>
+<a id="specific-techniques" class="anchor" href="#specific-techniques" aria-hidden="true"><span class="octicon octicon-link"></span></a>Specific Techniques</h2>
+
+<h5>
+<a id="1-feature-extraction-using-shallow-dependency-parsing" class="anchor" href="#1-feature-extraction-using-shallow-dependency-parsing" aria-hidden="true"><span class="octicon octicon-link"></span></a>1. Feature extraction: Using shallow dependency parsing.</h5>
+
+<h5>
+<a id="2-anaphora-resolution-either-on-our-own-or-using-open-source-tools-like-bart" class="anchor" href="#2-anaphora-resolution-either-on-our-own-or-using-open-source-tools-like-bart" aria-hidden="true"><span class="octicon octicon-link"></span></a>2. Anaphora resolution: Either on our own or using open source tools like BART.</h5>
+
+<h5>
+<a id="3-synonym-identification-using-wordnetdbpedia" class="anchor" href="#3-synonym-identification-using-wordnetdbpedia" aria-hidden="true"><span class="octicon octicon-link"></span></a>3. Synonym Identification: Using WordNet/DBPedia.</h5>
+
+<h5>
+<a id="4-feature-selection-rank-and-select-features-using-a-relevancy-algorithm-like-tf-idf" class="anchor" href="#4-feature-selection-rank-and-select-features-using-a-relevancy-algorithm-like-tf-idf" aria-hidden="true"><span class="octicon octicon-link"></span></a>4. Feature Selection: Rank and select features using a relevancy algorithm like tf-idf.</h5>
+
+<h5>
+<a id="5-sentiment-classification-of-features-using-perceptron-based-on-training-data" class="anchor" href="#5-sentiment-classification-of-features-using-perceptron-based-on-training-data" aria-hidden="true"><span class="octicon octicon-link"></span></a>5. Sentiment classification of features: Using perceptron based on training data.</h5>
+
+<h2>
+<a id="evaluation" class="anchor" href="#evaluation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Evaluation</h2>
+
+<p>The system is evaluated on two aspects:</p>
+
+<h5>
+<a id="1-extraction-of-relevant-features-from-product-reviews" class="anchor" href="#1-extraction-of-relevant-features-from-product-reviews" aria-hidden="true"><span class="octicon octicon-link"></span></a>1. Extraction of relevant features from product reviews</h5>
+
+<h5>
+<a id="2-identifying-the-aggregated-sentiment-for-each-of-the-extracted-features" class="anchor" href="#2-identifying-the-aggregated-sentiment-for-each-of-the-extracted-features" aria-hidden="true"><span class="octicon octicon-link"></span></a>2. Identifying the aggregated sentiment for each of the extracted features</h5>
+
+<h2>
+<a id="authors" class="anchor" href="#authors" aria-hidden="true"><span class="octicon octicon-link"></span></a>Authors</h2>
+
+<p>This project is maintained by Akhil Ramachandran (<a href="https://github.com/akhilram" class="user-mention">@akhilram</a>), Indu Mohanan (<a href="https://github.com/imohanan" class="user-mention">@imohanan</a>), and Majisha Namath Parambath (<a href="https://github.com/npmajisha" class="user-mention">@npmajisha</a>).</p>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Feature Level Opinion Mining from Product Reviews maintained by <a href="https://github.com/akhilram">akhilram</a></p>
+        <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
