@@ -1,3 +1,9 @@
+# mongoimport -d AmazonReviews -c watches Watches.json
+# start mongo
+#Commands in mongo
+# use AmazonReviews
+# db.watches.find({"product/productId" : "B000NLZ4AM"},{"review/text":1},{"_id":0})
+
 import gzip 
 import json as simplejson 
 
