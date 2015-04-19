@@ -1,0 +1,156 @@
+<text1>
+<s>
+<coref set-id="set_2">
+<w pos="prp">I</w>
+</coref>
+<w pos="vbd">purchased</w>
+<coref set-id="set_1">
+<w pos="dt">this</w>
+<w pos="nn">watch</w>
+</coref>
+<w pos="in">in</w>
+<w pos="nnp">March</w>
+<w pos="cd">2010</w>
+<w pos="in">for</w>
+<w pos="jj">casual</w>
+<w pos="nn">wear</w>
+<w pos=".">.</w>
+</s><s>
+<coref set-id="set_1">
+<w pos="dt">The</w>
+<w pos="nn">watch</w>
+</coref>
+<w pos="vbz">looks</w>
+<w pos="jj">great</w>
+<w pos=",">,</w>
+<w pos="cc">but</w>
+<w pos="vbz">has</w>
+<w pos="dt">an</w>
+<w pos="jj">unusual</w>
+<w pos="nn">feature</w>
+<w pos="in">in</w>
+<w pos="in">that</w>
+<w pos="dt">the</w>
+<w pos="nn">date</w>
+<w pos="vbz">does</w>
+<w pos="rb">not</w>
+<w pos="vb">reset</w>
+<w pos="in">at</w>
+<w pos="cd">31</w>
+<w pos=",">,</w>
+<w pos="cc">but</w>
+<w pos="vbz">continues</w>
+<w pos="in">up</w>
+<w pos="to">to</w>
+<w pos="cd">39</w>
+<w pos=":">-</w>
+<w pos="dt">a</w>
+<w pos="jj">minor</w>
+<w pos="cc">but</w>
+<w pos="jj">monthly</w>
+<w pos="nn">annoyance</w>
+<w pos="nn">.Today</w>
+<w pos=",">,</w>
+<coref set-id="set_2">
+<w pos="prp">I</w>
+</coref>
+<w pos="vbd">dropped</w>
+<coref set-id="set_1">
+<w pos="dt">the</w>
+<w pos="nn">watch</w>
+</coref>
+<w pos="wrb">when</w>
+<w pos="vbg">putting</w>
+<coref set-id="set_1">
+<w pos="prp">it</w>
+</coref>
+<w pos="in">on</w>
+<w pos=":">-</w>
+<coref set-id="set_1">
+<w pos="prp">it</w>
+</coref>
+<w pos="vbd">fell</w>
+<w pos="in">from</w>
+<w pos="nn">counter</w>
+<w pos="nn">height</w>
+<w pos=".">.</w>
+</s><s>
+<w pos="wrb">When</w>
+<coref set-id="set_1">
+<w pos="prp">it</w>
+</coref>
+<w pos="vbd">hit</w>
+<w pos="dt">the</w>
+<w pos="nn">tile</w>
+<w pos="nn">floor</w>
+<w pos=",">,</w>
+<w pos="rb">nearly</w>
+<w pos="dt">all</w>
+<w pos="in">of</w>
+<w pos="dt">the</w>
+<w pos="nns">numbers</w>
+<w pos="vbd">broke</w>
+<w pos="rp">off</w>
+<w pos="cc">and</w>
+<w pos="vbp">are</w>
+<w pos="rb">now</w>
+<w pos="vbg">floating</w>
+<w pos="in">inside</w>
+<w pos="dt">the</w>
+<w pos="nn">face</w>
+<w pos="in">of</w>
+<coref set-id="set_1">
+<w pos="dt">the</w>
+<w pos="nn">watch</w>
+</coref>
+<w pos=".">.</w>
+</s><s>
+<coref set-id="set_2">
+<w pos="prp">I</w>
+</coref>
+<w pos="vbp">guess</w>
+<coref set-id="set_3">
+<w pos="prp">you</w>
+</coref>
+<w pos="vbp">get</w>
+<w pos="wp">what</w>
+<coref set-id="set_3">
+<w pos="prp">you</w>
+</coref>
+<w pos="vbp">pay</w>
+<w pos="in">for</w>
+<w pos=",">,</w>
+<w pos="cc">but</w>
+<w pos="dt">the</w>
+<coref set-id="set_0">
+<w pos="$">$</w>
+<w pos="cd">60</w>
+<w pos="nn">Timex</w>
+</coref>
+<coref set-id="set_2">
+<w pos="prp">I</w>
+</coref>
+<w pos="vbp">am</w>
+<w pos="vbg">wearing</w>
+<w pos="in">at</w>
+<w pos="dt">the</w>
+<w pos="nn">moment</w>
+<w pos="vbz">has</w>
+<w pos="rb">never</w>
+<w pos="vbn">lost</w>
+<coref set-id="set_0">
+<w pos="prp$">its</w>
+</coref>
+<w pos="nns">numbers</w>
+<w pos=".">.</w>
+</s><s>
+<coref set-id="set_2">
+<w pos="prp">I</w>
+</coref>
+<w pos="md">would</w>
+<w pos="vb">recommend</w>
+<w pos="vbg">looking</w>
+<w pos="rb">elsewhere</w>
+<w pos=".">.</w>
+</s>
+</text1>
