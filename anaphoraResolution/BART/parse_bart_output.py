@@ -25,13 +25,13 @@ class Parser:
         for sentence in coref_sentences:
             for word in sentence:
                 if word[1]=='nn': 
-                    return [sen_tuple[0] for sen_tuple in sentence]
+                    words= [sen_tuple[0] for sen_tuple in sentence]
                     noun_phrase_found=True
                     break
-        if noun_phrase_found==False: 
+        if noun_phrase_found==False or len(parent.find_all('w',{"pos":"nn"})) != 0: 
             words=parent.find_all('w')
             words=[word.get_text() for word in words]
-            return words
+        return words
             
                 
 
