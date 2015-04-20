@@ -58,27 +58,6 @@ class Parser:
         return 
 
 
-
-
-        for tag in data.find_all('coref'):
-            #del tag['set-id']
-            tag.extract()
-            #noun_phrase=tag.find_all('w',{"pos":"nn"})
-            #if len(noun_phrase) ==0:    print(tag)
-            #else: print(noun_phrase)
-        print(data)        
-        return 
-        #print(self.coref)    
-        text=[] 
-        for sentence in data.find_all('s'):
-            words=sentence.find_all('w')
-            text.extend([word.getText() for word in words])
-        print(text)
-            #for word in words:
-                #print(word)
-        #for word in data.find_all('w'):
-            #print word.text
-
 if __name__=="__main__":
     parser=Parser("output.xml")
     parser.parse()
