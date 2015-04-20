@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -24,14 +25,33 @@ public class FeatureExtractor {
 	
 	static {
 		try {
-			BufferedReader stopwords = new BufferedReader(new FileReader(new File("data/en.txt")));
-		} catch (FileNotFoundException e) {
+			stopwords = new HashSet<String>();
+			BufferedReader stopwordsFile = new BufferedReader(new FileReader(new File("data/en.txt")));
+			String line = null;
+			while((line=stopwordsFile.readLine()) != null) {
+				stopwords.add(line);
+			}
+		 
+		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 	
 	public static void main(String args[]) throws IOException {
+		
+		int numFeatures = 10, numIterations = 1;
+		if(Arrays.asList(args).contains("--mulitple-files")) {
+			
+		}
+		
+		if(Arrays.asList(args).contains("--num-iterations")) {
+			numIterations = Integer.parseInt(args[Arrays.asList(args).indexOf((String)"--num-iterations") + 1]);
+		}
+		
+		if(Arrays.asList(args).contains("--num-features")) {
+			numFeatures = Integer.parseInt(args[Arrays.asList(args).indexOf((String)"--num-features") + 1]);
+		}
 		
 		String inputReviewFile = args[0];
 		String outputFeatureFile = args[1];
@@ -47,12 +67,24 @@ public class FeatureExtractor {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		if(Arrays.asList(args).contains("--filter-nouns")) {
+			posTagger.filterNouns(taggedReviewFile, "data/ReviewTaggedFiltered.txt");
+			taggedReviewFile = "data/ReviewTaggedFiltered.txt";
+		}
 		
 		TopicModeller topicModel = new TopicModeller(taggedReviewFile, extractedTopicFile);
-		topicModel.modelTopics();
+		topicModel.importDir();
 		
-		generateFeatures();
-		writeFeatures();
+		for(int i=0; i<numIterations; i++) {
+			topicModel.trainTopics();
+			generateFeatures();
+			System.out.println(featureSet.size());
+		}
+		featureSet = sortByRelevance();
+		writeFeatures(numFeatures);
+		
+		
+		
 	}
 
 	public static void generateFeatures() throws IOException {
@@ -62,7 +94,7 @@ public class FeatureExtractor {
 		
 		getWords(topicReader);
 		updateCount(reviewReader);
-		featureSet = sortByRelevance();
+		
 	}
 	
 	public static void getWords(BufferedReader topicReader) throws IOException {
@@ -106,16 +138,23 @@ public class FeatureExtractor {
 		return sortedMap;
 	}
 	
-	public static void writeFeatures() throws IOException {
+	public static void writeFeatures(int numFeatures) throws IOException {
 		BufferedWriter featureWriter = new BufferedWriter(new FileWriter(new File("data/Features.txt")));
+		
 		for(Map.Entry<String,Integer> entry : featureSet.entrySet()) {
+			if(numFeatures == 0)
+				break;
+			
 			String key = entry.getKey();
+			if(stopwords.contains(key))
+				continue;
 			featureWriter.write(key);
 			
-			Integer value = entry.getValue();
-			featureWriter.write(" " + value);
+//			Integer value = entry.getValue();
+//			featureWriter.write(" " + value);
 			
 			featureWriter.newLine();
+			numFeatures -= 1;
 		}
 		featureWriter.close();
 	}
