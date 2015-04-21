@@ -1,3 +1,4 @@
+import os
 from bs4 import BeautifulSoup
 
 class Parser:
@@ -54,10 +55,13 @@ class Parser:
                 while ('set-id' in all_words[word_count+1].parent.attrs) and (word_count+1 < len(all_words))  : word_count+=1   
             else :  final_sentence.append(all_words[word_count].getText())      
             word_count+=1
-        print final_sentence
-        return 
+        final_sentence=" ".join(final_sentence)
+        print(final_sentence)
+        ip=input("Enter:")
+        return final_sentence
 
 
 if __name__=="__main__":
-    parser=Parser("output.xml")
-    parser.parse()
+    for filename in os.getdir("Output"):
+        parser=Parser(filename)
+        parser.parse()
