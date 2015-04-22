@@ -17,7 +17,7 @@ public class TopicModeller {
 		trainTopics();
 	}
 	
-	private void importDir() {
+	public void importDir() {
 		String command = "../topicmodelling/mallet-2.0.7/bin/mallet "
 				+ "import-file --input " + inputFile 
 				+ " --output data/topic-pos-input.mallet --keep-sequence --remove-stopwords --preserve-case TRUE";
@@ -25,10 +25,10 @@ public class TopicModeller {
 		//executeCommand(command);
 	}
 	
-	private void trainTopics() {
+	public void trainTopics() {
 		String command = "../topicmodelling/mallet-2.0.7/bin/mallet train-topics "
 				+ "--input data/topic-pos-input.mallet --output-topic-keys " + outputFile
-				+ " --num-top-words 15 --optimize-interval 20 --num-topics 15";
+				+ " --num-top-words 10 --optimize-interval 20 --num-topics 10";
 		String result = executeCommand(command);
 	}
 	

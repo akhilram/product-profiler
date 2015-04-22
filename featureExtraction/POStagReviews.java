@@ -43,4 +43,21 @@ public class POStagReviews {
 		outputWriter.close();
 	}
 	
+	public void filterNouns(String inputFile, String outputFile) throws IOException {
+		BufferedReader inputReader = new BufferedReader(new FileReader(inputFile));
+		BufferedWriter outputWriter = new BufferedWriter(new FileWriter(outputFile));
+		String inputLine = null;
+		while((inputLine = inputReader.readLine()) != null) {
+			String[] taggedWords = inputLine.split(" ");
+			for(String tokens : taggedWords) {
+				if(tokens.endsWith("NN") || tokens.endsWith("NNP")) {
+					outputWriter.write(tokens + " ");
+				}
+			}
+			outputWriter.newLine();
+		}
+		
+		outputWriter.close();
+	}
+	
 }

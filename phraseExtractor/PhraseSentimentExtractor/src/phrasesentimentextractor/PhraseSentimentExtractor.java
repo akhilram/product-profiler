@@ -42,13 +42,19 @@ public class PhraseSentimentExtractor {
         
         //Tokenizer model for the sentence from OpenNLP , tokenizes the sentence
         InputStream is = new FileInputStream("en-token.bin");
-        
+        String sentence = " It is not the Myota movement anymore, the Myota was 21 jewels and the rotor was plain with just the name etched in it.";
         String tokens[] = null;
                 
         TokenizerModel model = new TokenizerModel(is);
 	Tokenizer tokenizer = new TokenizerME(model);
-	tokens = tokenizer.tokenize("The Canon Powershot is the most powerful camera, I have used.");
         
+        DependencyTreeGenerator dr = DependencyTreeGenerator.getInstance();
+        
+	tokens = tokenizer.tokenize(sentence);
+        for(String token : tokens){
+            System.out.print(token+" ");
+        }
+        System.out.println("\nTags\n");
         String tags[] = null;
         
         //POS model from OpenNLP, gives the POS tags
@@ -56,6 +62,9 @@ public class PhraseSentimentExtractor {
         POSTaggerME tagger = new POSTaggerME(posmodel);
         tags = tagger.tag(tokens);
         
+        for(String tag : tags){
+            System.out.print(tag+" ");
+        }
         
         //chunker
         is = new FileInputStream("en-chunker.bin");
@@ -69,10 +78,20 @@ public class PhraseSentimentExtractor {
             System.out.println(r);
         }
         
+        System.out.println("\nPhrases\n");
         //Outputs spans of BIO-NP
         Span[] span = chunkerME.chunkAsSpans(tokens, tags);
-	for (Span s : span)
-		System.out.println(s.toString());
+	for (Span s : span){
+		System.out.print("\n"+s.toString()+" ");
+                for(int i= s.getStart(); i<s.getEnd();i++){
+                    System.out.print(tokens[i]+" ");
+                }
+        }
+        
+        
+        System.out.println("\nTyped Dependencies\n");
+        //get dependency tree
+        dr.getTypedDependencyTree(sentence);
         
         System.out.println("Success");
         
