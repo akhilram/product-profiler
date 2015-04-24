@@ -16,11 +16,13 @@ import edu.stanford.nlp.trees.EnglishGrammaticalRelations;
 import edu.stanford.nlp.trees.GrammaticalStructure;
 import edu.stanford.nlp.trees.PennTreebankLanguagePack;
 import edu.stanford.nlp.trees.Tree;
+import edu.stanford.nlp.trees.TreeGraphNode;
 import edu.stanford.nlp.trees.TreebankLanguagePack;
 import edu.stanford.nlp.trees.TypedDependency;
 import java.io.StringReader;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 /**
  *
@@ -67,15 +69,50 @@ public class DependencyTreeGenerator {
         return tokenizer.tokenize();
     }
     
-    public void getTypedDependencyTree(String sentence){
+    public DependencyTree getTypedDependencyTree(String sentence){
         Tree tr = parse(sentence);
         TreebankLanguagePack languagePack = new PennTreebankLanguagePack();
         GrammaticalStructure structure = languagePack.grammaticalStructureFactory().newGrammaticalStructure(tr);
         Collection<TypedDependency> typedDependencies = structure.typedDependenciesCollapsed();
-                
+          
+        
+       DependencyTree depTree = new DependencyTree();
+       DependencyTreeNode target;
+       DependencyTreeNode source;
+       
        for(TypedDependency td : typedDependencies) {
             
-                System.out.println(td);
+                System.out.println(td.reln().getLongName() + " " + td.gov().word()+" "+td.gov().index()+" "+td.dep().word()+" "+td.dep().index() );
+                
+                if(depTree.getVertex(td.gov().index()) == null){
+                    source = new DependencyTreeNode(td.gov().index(), td.gov().word());
+                }
+                else{
+                    source = depTree.getVertex(td.gov().index());
+                }
+                if(depTree.getVertex(td.dep().index()) == null){
+                    target = new DependencyTreeNode(td.dep().index(), td.dep().word());
+                }
+                else{
+                    target = depTree.getVertex(td.dep().index());
+                }
+                
+                DependencyTreeEdge edge = new DependencyTreeEdge(td.reln().getShortName(), target);
+                source.addEgde(edge);
+                depTree.addVertex(source);
+                depTree.addVertex(target);
+                
+                
+                
         }
+       DependencyTreeNode rootNode = depTree.getVertex(0);
+       //System.out.println(rootNode.word);
+       DependencyTreeNode rootword = rootNode.edges.get(0).target;
+       System.out.println("ROOT :"+rootword.word);
+       /*for(DependencyTreeEdge e : rootword.edges){
+           System.out.println(e.target.word);
+       }*/
+       
+       return depTree;
     }
 }
