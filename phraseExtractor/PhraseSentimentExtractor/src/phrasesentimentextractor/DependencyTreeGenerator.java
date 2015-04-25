@@ -18,7 +18,6 @@ import edu.stanford.nlp.trees.Tree;
 import edu.stanford.nlp.trees.TreebankLanguagePack;
 import edu.stanford.nlp.trees.TypedDependency;
 import java.io.StringReader;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -56,19 +55,21 @@ public class DependencyTreeGenerator {
         
     }
     
-    private static Tree parse(String str) {                
-        List<CoreLabel> tokens = tokenize(str);
+    public Tree parse(String sentence) {                
+        List<CoreLabel> tokens = tokenize(sentence);
         Tree tree = parser.apply(tokens);
+        System.out.println("\nPenn Parse Tree\n");
+        tree.pennPrint();
         return tree;
     }
 
-    private static List<CoreLabel> tokenize(String str) {
-        Tokenizer<CoreLabel> tokenizer = tokenizerFactory.getTokenizer(new StringReader(str));    
+    private static List<CoreLabel> tokenize(String sentence) {
+        Tokenizer<CoreLabel> tokenizer = tokenizerFactory.getTokenizer(new StringReader(sentence));    
         return tokenizer.tokenize();
     }
     
-    public DependencyTree getTypedDependencyTree(String sentence){
-        Tree tr = parse(sentence);
+    public DependencyTree getTypedDependencyTree(Tree tr){
+        
         TreebankLanguagePack languagePack = new PennTreebankLanguagePack();
         GrammaticalStructure structure = languagePack.grammaticalStructureFactory().newGrammaticalStructure(tr);
         Collection<TypedDependency> typedDependencies = structure.typedDependenciesCollapsed();
@@ -77,10 +78,12 @@ public class DependencyTreeGenerator {
        DependencyTree depTree = new DependencyTree();
        DependencyTreeNode target;
        DependencyTreeNode source;
-       
+       System.out.println("\nTyped Dependencies\n");
        for(TypedDependency td : typedDependencies) {
             
-                System.out.println(td.reln().getLongName() + " " + td.gov().word()+" "+td.gov().index()+" "+td.dep().word()+" "+td.dep().index() );
+                System.out.println(td.reln().getShortName()+"-"+td.reln().getLongName() + " " + td.gov().word()+" "+td.gov().index()+" "+td.dep().word()+" "+td.dep().index() );
+                
+                
                 
                 if(depTree.getVertex(td.gov().index()) == null){
                     source = new DependencyTreeNode(td.gov().index(), td.gov().word());
@@ -88,6 +91,7 @@ public class DependencyTreeGenerator {
                 else{
                     source = depTree.getVertex(td.gov().index());
                 }
+
                 if(depTree.getVertex(td.dep().index()) == null){
                     target = new DependencyTreeNode(td.dep().index(), td.dep().word());
                 }

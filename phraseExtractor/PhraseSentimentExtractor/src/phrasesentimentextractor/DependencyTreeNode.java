@@ -16,6 +16,7 @@ public class DependencyTreeNode {
     String word;
     int index;
     int phrase_index;
+    DependencyTreeNode parent;
     ArrayList<DependencyTreeEdge> edges;
     
     public DependencyTreeNode(int index, String word){
