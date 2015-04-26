@@ -52,6 +52,11 @@
 												</div>
 											
 											</div>
+                                            <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+        <button class="btn btn-primary" id="btnGetRating">Get Rating</button>
+    </div>
+										</div>
 										</div>
 									</div>
 								</div>
@@ -67,7 +72,7 @@
 		<h2>Features</h2>
 		{{#each items}}
 			<div class="checkbox-inline">
-				<input type="checkbox" name="n{{@index}}" id="i{{@index}}">{{this}}</input>
+				<input type="checkbox" name="n{{@index}}" id="i{{@index}}" value="{{this}}">{{this}}</input>
 			</div>
 		{{/each}}
 	</script>

@@ -76,6 +76,35 @@
         //         $("")
         //     }
         //     );
+        
+        $(document).on("click", ".modal-footer #btnGetRating", function () {
+           
+            var selected = [];
+            $(".checkbox-inline").find("input[type='checkbox']:checked").each(function(){
+                selected.push($(this).attr("value"));
+            
+            });
+            var data = {};
+            data["features"] = selected;
+            var url = "get-rating.php";
+             $.ajax({    
+                url: url,
+                data: data,
+                dataType : "json",
+                type: 'GET',
+                success: function(output) {
+                    processRatings(output);
+                },
+            //     error:  function(){
+            //         console.log("Output error");
+            //     }   
+        });
+            
+            
+            
+             
+            
+        });
 
 });
 
