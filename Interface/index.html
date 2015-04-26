@@ -39,11 +39,13 @@
 											<div class="modal-body">
 											
 												<p id="prdid{{@index}}" style="display:none;">{{basicInfo.productID}}</p>
-												<div id="load{{@index}}" class="col-md-offset-4 col-md-4">
-  													<img src="http://jimpunk.net/Loading/wp-content/uploads/loading1.gif"/>
+												<div id="load{{@index}}" class="col-md-offset-3">
+  													<img src="http://jimpunk.net/Loading/wp-content/uploads/loading1.gif" width="400px"/>
 												</div>
-												<div id="features" class="col-md-offset-4 col-md-4">
-
+												<div class="row">
+													<div id="features{{@index}}" class="col-md-offset-3 col-md-6">
+													
+													</div>
 												</div>
 												<div id="ratings">
 
@@ -62,6 +64,7 @@
 		{{/each}}
 	</script>
 	<script id="feature-template" type="text/x-handlebars-template">
+		<h2>Features</h2>
 		{{#each items}}
 			<div class="checkbox-inline">
 				<input type="checkbox" name="n{{@index}}" id="i{{@index}}">{{this}}</input>

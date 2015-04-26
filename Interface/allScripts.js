@@ -147,7 +147,9 @@
         var id = ($(e.target)).attr('id');
         
         id = id.charAt(2).toString();
+        $("#load" + id).css("display", "inline");
         $("#modal" + id).modal();
+        $("#features" + id).html("");
         var url = 'process-reviews.php';
         var data2 = {};
         data2["productidvalue"] = $("#prdid" + id).text();
@@ -168,14 +170,15 @@
 
     function processReviews(output, id) {
         
-        $("#load" + id).css("display", "none");
+        
         // $("#prdid" + id).css("display", "inline");
         // $("#prdid" + id).text(JSON.stringify(output));
 
         var features = output["list"];
         var result = featureTemplate({items:features});
-        $("#features").html(result);
-
+        $("#features" + id).html(result);
+        // $("#features").css("display", "inline");
+        $("#load" + id).css("display", "none");
     }
 
 
