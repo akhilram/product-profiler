@@ -20,8 +20,12 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintWriter;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -32,7 +36,6 @@ import java.util.Scanner;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import opennlp.tools.chunker.ChunkerME;
 import opennlp.tools.chunker.ChunkerModel;
 import opennlp.tools.util.Span;
@@ -74,10 +77,16 @@ public class PhraseSentimentExtractor {
         TokenizerFactory<CoreLabel> tokenizerFactory = PTBTokenizer.factory(new CoreLabelTokenFactory(), "invertible=true");
         
         //chunker
-        InputStream is = new FileInputStream("en-chunker.bin");
+        Path filepath = Paths.get("models/en-chunker.bin");
+        InputStream is = new FileInputStream(filepath.toFile());
 	ChunkerModel cModel = new ChunkerModel(is);
         ChunkerME chunkerME = new ChunkerME(cModel);
         
+        
+        //Output file 
+        File output_phrases = new File(args[2]);
+        FileWriter fout = new FileWriter(output_phrases);
+        PrintWriter out = new PrintWriter(fout);
         
         //Start processing the review file
         
@@ -91,14 +100,8 @@ public class PhraseSentimentExtractor {
             features.add(scanner.nextLine().trim());
             feat_counter++;
         }
-        
-        Pattern p_to = Pattern.compile("\\bto\\b", Pattern.CASE_INSENSITIVE);
+        String sentence ="";
 
-        
-        String sentence = "There are a number of completely meaningless story sidetracks.";
-        
-        
- 
         File review_text = new File(args[1]);
         FileReader fileReader = new FileReader(review_text);
         
@@ -108,30 +111,30 @@ public class PhraseSentimentExtractor {
         
         for (List line : dp) {
             boolean feature_exists = false;
-            
+//            
             sentence = Sentence.listToString(line);
-            Set<String> check_features = new HashSet();
-            for(String feature: features){
-                Pattern pattern = Pattern.compile("\\b"+feature.toLowerCase()+"\\b", Pattern.CASE_INSENSITIVE);
-                Matcher matcher = pattern.matcher(sentence.toLowerCase());
-                while(matcher.find()){
-                    feature_exists = true;
-                    check_features.add(feature);
-                }
-                
+                Set<String> check_features = new HashSet();
+                for(String feature: features){
+                    Pattern pattern = Pattern.compile("\\b"+feature.toLowerCase()+"\\b", Pattern.CASE_INSENSITIVE);
+                    Matcher matcher = pattern.matcher(sentence.toLowerCase());
+                    while(matcher.find()){
+                        feature_exists = true;
+                        check_features.add(feature);
+                    }
 
-            }
-            if (!feature_exists){
-                System.out.println("\n"+sentence);
-                System.out.println("No feature present!\n");
-                continue;
-            }
-            
-            //Features present
-            System.out.println("\nFeatures present\n");
-            for(String feature : check_features){
-                System.out.print(feature+" ");
-            }
+
+                }
+                if (!feature_exists){
+                    //System.out.println("\n"+sentence);
+                    //System.out.println("No feature present!\n");
+                    continue;
+                }
+
+                //Features present
+                //System.out.println("\nFeatures present\n");
+//                for(String feature : check_features){
+//                    //System.out.print(feature+" ");
+//                }
             
             
             //get parse tree and construct dependency tree    
@@ -139,19 +142,19 @@ public class PhraseSentimentExtractor {
         DependencyTree depTree = dr.getTypedDependencyTree(tr);
         
         //get tokenized words
-        System.out.println("\nTokenized Words\n");
+        //System.out.println("\nTokenized Words\n");
         List<Word> word_list = tr.yieldWords();
         List<String> word_tokens = new ArrayList();
         for(Word word : word_list){
             word_tokens.add(word.word());
-            System.out.print(word.word()+" ");
+            //System.out.print(word.word()+" ");
         }
         String[] words = new String[word_tokens.size()];
         words = word_tokens.toArray(words);
         
         
         
-        System.out.println("\nPOS Tags\n");
+        //System.out.println("\nPOS Tags\n");
         List<TaggedWord> postags = tr.taggedYield();
         List<String> tag_tokens = new ArrayList();
         for(TaggedWord postag : postags){
@@ -162,7 +165,7 @@ public class PhraseSentimentExtractor {
         tags = tag_tokens.toArray(tags);
         
                 
-        System.out.println("\nBIO Encoding\n");
+        //System.out.println("\nBIO Encoding\n");
         //BIO encoding for sentence
 
 	String result[] = chunkerME.chunk(words, tags);
@@ -170,7 +173,7 @@ public class PhraseSentimentExtractor {
             System.out.print(r+" ");
         }
         
-        System.out.println("\nPhrases\n");
+        //System.out.println("\nPhrases\n");
         //Outputs spans of BIO-NP
 
         HashMap<Integer, Integer> span_map = new HashMap();
@@ -183,7 +186,7 @@ public class PhraseSentimentExtractor {
 	for (Span s : span){
                 
                 ArrayList<String> phrase_words = new ArrayList();
-		System.out.print("\n"+s.toString()+" ");
+		//System.out.print("\n"+s.toString()+" ");
                 int n=0;
                 for(int i= s.getStart(); i<s.getEnd();i++){
                     System.out.print(words[i]+" ");
@@ -203,6 +206,7 @@ public class PhraseSentimentExtractor {
         
         
         //RootWord //Actual root is dummy
+
         DependencyTreeNode rootNode = depTree.getVertex(0).edges.get(0).target;
         Queue<DependencyTreeNode> queue = new LinkedList();
         rootNode.parent = null;
@@ -211,122 +215,36 @@ public class PhraseSentimentExtractor {
         while(!queue.isEmpty()){
             
             DependencyTreeNode u = queue.remove();
-            
+            u.pos = tags[u.index-1];
             if(span_map.get(u.index-1)!=null){
                 u.phrase_index = span_map.get(u.index-1);
+                
             }
             else{
                 u.phrase_index = -1;
             }
-            System.out.println("\n"+u.word+"-"+u.phrase_index+"-"+tags[u.index-1]);
+            //System.out.println("\n"+u.word+"-"+u.phrase_index+"-"+tags[u.index-1]);
             for(DependencyTreeEdge e : u.edges){
                 e.target.parent = u;
                 queue.add(e.target);
-                System.out.print(e.target.word+" ");
+                //System.out.print(e.target.word+" ");
             }          
         
         
-        }        
+        } 
+        
+        SentimentExtract.getSentimentPhrases(check_features,pSets,depTree);
+        
+        
             
             num_lines++;
         }
         
         System.out.println(num_lines);
         
-        
-        //Single sentence Test
-        /*System.out.println("\nTyped Dependencies\n");
-        //get parse tree and construct dependency tree    
-        Tree tr = dr.parse(sentence);
-        DependencyTree depTree = dr.getTypedDependencyTree(tr);
-        
-        //get tokenized words
-        System.out.println("\nTokenized Words\n");
-        List<Word> word_list = tr.yieldWords();
-        List<String> word_tokens = new ArrayList();
-        for(Word word : word_list){
-            word_tokens.add(word.word());
-            System.out.print(word.word()+" ");
-        }
-        String[] words = new String[word_tokens.size()];
-        words = word_tokens.toArray(words);
-        
-        System.out.println("\nPOS Tags\n");
-        List<TaggedWord> postags = tr.taggedYield();
-        List<String> tag_tokens = new ArrayList();
-        for(TaggedWord postag : postags){
-            tag_tokens.add(postag.tag());
-            System.out.print(postag.tag()+" ");
-        }
-        String[] tags = new String[tag_tokens.size()];
-        tags = tag_tokens.toArray(tags);
-                
-        System.out.println("\nBIO Encoding\n");
-        //BIO encoding for sentence
-
-	String result[] = chunkerME.chunk(words, tags);
-        for(String r: result){
-            System.out.print(r+" ");
-        }
-        
-        System.out.println("\nPhrases\n");
-        //Outputs spans of BIO-NP
-
-        HashMap<Integer, Integer> span_map = new HashMap();
-        Span[] span = chunkerME.chunkAsSpans(words, tags);
-        int j = 0;
-        
-        
-        ArrayList<PhraseSet> pSets = new ArrayList();
-        
-	for (Span s : span){
-                
-                ArrayList<String> phrase_words = new ArrayList();
-		System.out.print("\n"+s.toString()+" ");
-                int n=0;
-                for(int i= s.getStart(); i<s.getEnd();i++){
-                    System.out.print(words[i]+" ");
-                    span_map.put(i, j);
-                    phrase_words.add(words[i]);
-                    n++;
-                }
-                
-                PhraseSet pSet = new PhraseSet(j,s.toString(), phrase_words);
-                pSets.add(pSet);
-                
-                
-                j++;
-        }
-        
-        
-        
-        
-        //RootWord //Actual root is dummy
-        DependencyTreeNode rootNode = depTree.getVertex(0).edges.get(0).target;;
-        Queue<DependencyTreeNode> queue = new LinkedList();
-        
-        queue.add(rootNode);
-        
-        while(!queue.isEmpty()){
-            
-            DependencyTreeNode u = queue.remove();
-            
-            if(span_map.get(u.index-1)!=null){
-                u.phrase_index = span_map.get(u.index-1);
-            }
-            else{
-                u.phrase_index = -1;
-            }
-            System.out.println("\n"+u.word+"-"+u.phrase_index+"-"+tags[u.index-1]);
-            for(DependencyTreeEdge e : u.edges){
-                queue.add(e.target);
-                System.out.print(e.target.word+" ");
-            }          
-        
-        
-        }*/        
-        
+        out.println("Success");
         System.out.println("Success");
+        out.close();
         
         
         

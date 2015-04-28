@@ -8,6 +8,7 @@ package phrasesentimentextractor;
 
 import java.util.ArrayList;
 import java.util.ListIterator;
+import java.util.Set;
 
 /**
  *

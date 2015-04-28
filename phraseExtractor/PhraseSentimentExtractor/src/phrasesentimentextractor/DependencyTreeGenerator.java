@@ -58,8 +58,8 @@ public class DependencyTreeGenerator {
     public Tree parse(String sentence) {                
         List<CoreLabel> tokens = tokenize(sentence);
         Tree tree = parser.apply(tokens);
-        System.out.println("\nPenn Parse Tree\n");
-        tree.pennPrint();
+        //System.out.println("\nPenn Parse Tree\n");
+        //tree.pennPrint();
         return tree;
     }
 
@@ -72,16 +72,16 @@ public class DependencyTreeGenerator {
         
         TreebankLanguagePack languagePack = new PennTreebankLanguagePack();
         GrammaticalStructure structure = languagePack.grammaticalStructureFactory().newGrammaticalStructure(tr);
-        Collection<TypedDependency> typedDependencies = structure.typedDependenciesCollapsed();
+        Collection<TypedDependency> typedDependencies = structure.typedDependencies();
           
         
        DependencyTree depTree = new DependencyTree();
        DependencyTreeNode target;
        DependencyTreeNode source;
-       System.out.println("\nTyped Dependencies\n");
+       //System.out.println("\nTyped Dependencies\n");
        for(TypedDependency td : typedDependencies) {
             
-                System.out.println(td.reln().getShortName()+"-"+td.reln().getLongName() + " " + td.gov().word()+" "+td.gov().index()+" "+td.dep().word()+" "+td.dep().index() );
+                //System.out.println(td.reln().getShortName()+"-"+td.reln().getLongName() + " " + td.gov().word()+" "+td.gov().index()+" "+td.dep().word()+" "+td.dep().index() );
                 
                 
                 
@@ -110,7 +110,7 @@ public class DependencyTreeGenerator {
        DependencyTreeNode rootNode = depTree.getVertex(0);
        //System.out.println(rootNode.word);
        DependencyTreeNode rootword = rootNode.edges.get(0).target;
-       System.out.println("ROOT :"+rootword.word);
+       //System.out.println("ROOT :"+rootword.word);
        /*for(DependencyTreeEdge e : rootword.edges){
            System.out.println(e.target.word);
        }*/

@@ -15,6 +15,7 @@ import java.util.ArrayList;
 public class DependencyTreeNode {
     String word;
     int index;
+    String pos;
     int phrase_index;
     DependencyTreeNode parent;
     ArrayList<DependencyTreeEdge> edges;

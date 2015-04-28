@@ -24,11 +24,15 @@ public class PhraseSet {
             this.words = new ArrayList(words);
         }   
         
-        public String getPhraseTag(int id){
+        public int getPhraseID(){
+            return this.id;
+        }
+        
+        public String getPhraseTag(){
             return this.phrase_tag;
         }
         
-        public ArrayList<String> getWords(int id){
+        public ArrayList<String> getWords(){
             return this.words;
         }
     
