@@ -92,12 +92,17 @@ public class PhraseSentimentExtractor {
         
         //Extract all the features
         Set<String> features = new HashSet();
+        HashMap<String,List<String>> featuresPhrases = new HashMap();
         
         File feat_input = new File(args[0]);
         Scanner scanner = new Scanner(feat_input);
         int feat_counter = 0;
+        String feat = "";
         while(scanner.hasNext()){
-            features.add(scanner.nextLine().trim());
+            feat = scanner.nextLine().trim();
+            features.add(feat);
+            List<String> f_phrases = new ArrayList();
+            featuresPhrases.put(feat, f_phrases);
             feat_counter++;
         }
         String sentence ="";
@@ -233,16 +238,24 @@ public class PhraseSentimentExtractor {
         
         } 
         
-        SentimentExtract.getSentimentPhrases(check_features,pSets,depTree);
         
+        HashMap<String, List<String>> featurePhrases =  SentimentExtract.getSentimentPhrases(check_features,pSets,depTree);
+        for(String chk_feat:check_features){
+            featuresPhrases.get(chk_feat).addAll(featurePhrases.get(chk_feat));
+        }
         
             
             num_lines++;
         }
         
         System.out.println(num_lines);
+        for(String f:features){
+            out.print(f+" ");
+            
+            out.print(String.join(" ", featuresPhrases.get(f)));
+            out.println();
+        }
         
-        out.println("Success");
         System.out.println("Success");
         out.close();
         

@@ -18,13 +18,14 @@ import java.util.Set;
 public class SentimentExtract {
     
     static List<PhraseSet> phraseSet;
+    static HashMap<String,List<String>> featurePhrases = new HashMap();
     
     
     private static void foundVerb(DependencyTreeNode vertex, String feature, HashMap<Integer,Boolean> phraseSeen){
         List<DependencyTreeEdge> childEdges = vertex.edges;
         DependencyTreeNode parent = vertex.parent;
         
-
+            List<String> f_phrases = featurePhrases.get(feature);
             //check if any of the child is the feature
             for(DependencyTreeEdge e : childEdges){
                 if(e.relation_label.contains("subj") || e.relation_label.contains("obj")){
@@ -42,12 +43,14 @@ public class SentimentExtract {
                                                 System.out.println("Verb phrase:");
                                                 for(String word : phraseSet.get(vertex.phrase_index).getWords()){
                                                     System.out.print(word+" ");
+                                                    f_phrases.add(word);
                                                 }
                                             }
                                         }
                                         else{
                                         
                                             System.out.print("Verb phrase:"+vertex.word);
+                                            f_phrases.add(vertex.word);
                                         }
                                         if(phraseSeen.get(other.target.phrase_index)!=null){
                                             if(!phraseSeen.get(other.target.phrase_index)){
@@ -56,11 +59,13 @@ public class SentimentExtract {
                                             System.out.println("\nChildren of verb: "+vertex.word+" Feature: "+child.word+"\nPhrase:");
                                             for(String word : phraseSet.get(other.target.phrase_index).getWords()){
                                                 System.out.print(word+" ");
+                                                f_phrases.add(word);
                                             }
                                         }}
                                         else{
                                         
                                             System.out.print("Children of verb:"+other.target.word);
+                                            f_phrases.add(other.target.word);
                                         }
                                     }
                                 }
@@ -85,6 +90,7 @@ public class SentimentExtract {
                                                     System.out.println("Verb phrase:");
                                                     for(String word : phraseSet.get(vertex.phrase_index).getWords()){
                                                         System.out.print(word+" ");
+                                                        f_phrases.add(word);
                                                     }
                                                     
                                                 }}
@@ -98,12 +104,14 @@ public class SentimentExtract {
                                                     System.out.println("\nChildren of verb: "+vertex.word+" Feature: "+vertex.parent.word+"\nPhrase:");
                                                     for(String word : phraseSet.get(other.target.phrase_index).getWords()){
                                                         System.out.print(word+" ");
+                                                        f_phrases.add(word);
                                                     }
                                                 
                                                 }
                                                 }
                                                 else{
                                                     System.out.println("Children of verb:"+other.target.word);
+                                                    f_phrases.add(other.target.word);
                                                 
                                                 }
                                             }
@@ -168,7 +176,7 @@ public class SentimentExtract {
     private static void foundNoun(DependencyTreeNode vertex, String feature , HashMap<Integer,Boolean> phraseSeen){
         DependencyTreeNode parent = vertex.parent;
             
-            
+            List<String> f_phrases = featurePhrases.get(feature);
             
             if(feature.equals(vertex.word.toLowerCase())){
                 
@@ -181,12 +189,14 @@ public class SentimentExtract {
                             System.out.println("Noun phrases:");
                             for(String word : phraseSet.get(parent.phrase_index).getWords()){
                                 System.out.print(word+" ");
+                                f_phrases.add(word);
                             }
                     
                         }}
                         else{
                         
                             System.out.print(parent.word);
+                            f_phrases.add(parent.word);
                         }
                         checkChildrenNoun(parent, feature, phraseSeen);
                     }
@@ -198,12 +208,14 @@ public class SentimentExtract {
                             System.out.println("Noun phrases:");
                             for(String word : phraseSet.get(parent.phrase_index).getWords()){
                                 System.out.print(word+" ");
+                                f_phrases.add(word);
                             }
                     
                         }}
                         else{
                         
                             System.out.print(parent.word);
+                            f_phrases.add(parent.word);
                         }
                         
                         //check their parents as well
@@ -218,12 +230,14 @@ public class SentimentExtract {
                             System.out.println("Noun phrases:");
                             for(String word : phraseSet.get(grandparent.phrase_index).getWords()){
                                 System.out.print(word+" ");
+                                f_phrases.add(word);
                             }
                     
                         }}
                         else{
                         
                             System.out.print(grandparent.word);
+                            f_phrases.add(grandparent.word);
                         }
                             }
                         
@@ -269,6 +283,8 @@ public class SentimentExtract {
     
     private static void checkChildrenNoun(DependencyTreeNode vertex, String feature,HashMap<Integer,Boolean> phraseSeen){
         
+        List<String> f_phrases = featurePhrases.get(feature);
+        
         for(DependencyTreeEdge e: vertex.edges){
             DependencyTreeNode child = e.target;
             if(child.pos.startsWith("JJ") || child.pos.startsWith("VB") || child.pos.startsWith("RB") || child.pos.startsWith("NN")){
@@ -279,11 +295,13 @@ public class SentimentExtract {
                     System.out.println("Noun phrases:");
                     for(String word : phraseSet.get(child.phrase_index).getWords()){
                         System.out.print(word+" ");
+                        f_phrases.add(word);
                     }
                     
                 }}
                 else{
                     System.out.println("Noun phrases:"+child.word);
+                    f_phrases.add(child.word);
                 }
                 
                 
@@ -293,11 +311,16 @@ public class SentimentExtract {
         
     }
     
-    public static void getSentimentPhrases(Set<String> checkFeatures, List<PhraseSet> pSets,DependencyTree depTree){
+    public static HashMap<String, List<String>> getSentimentPhrases(Set<String> checkFeatures, List<PhraseSet> pSets,DependencyTree depTree){
         
         phraseSet = new ArrayList(pSets);
+        featurePhrases = new HashMap();
         
         for(String feature : checkFeatures){
+            
+            List<String> phraseWords = new ArrayList();
+            
+            featurePhrases.put(feature,phraseWords);
             
             System.out.println("\nFeature :"+feature+"\nPhrases:");
             
@@ -344,6 +367,8 @@ public class SentimentExtract {
 
             }
         }
+        
+        return featurePhrases;
     }
 }
         
