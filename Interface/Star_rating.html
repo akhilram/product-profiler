@@ -1,0 +1,85 @@
+<html>
+
+<head>
+<meta charset="utf-8">
+<style>
+
+
+.star-ratings-css {
+  unicode-bidi: bidi-override;
+  color: #c5c5c5;
+  font-size: 25px;
+  height: 25px;
+  width: 100px;
+  margin: 0 auto;
+  position: relative;
+  text-shadow: 0 1px 0 #a2a2a2;
+} 
+.star-ratings-css::before { 
+  content: '★★★★★';
+  opacity: .3;
+}
+
+[title=".000"]::after {
+  width: 0%;
+}
+[title=".125"]::after {
+  width: 12.5%;
+}
+[title=".250"]::after {
+  width: 25%;
+}
+[title=".375"]::after {
+  width: 37.5%;
+}
+[title=".500"]::after {
+  width: 50%;
+}
+[title=".625"]::after {
+  width: 62.5%;
+}
+[title=".750"]::after {
+  width: 75%;
+}
+[title=".875"]::after {
+  width: 87.5%;
+}
+.star-ratings-css::after {
+  color: gold;
+  content: '★★★★★';
+  text-shadow: 0 1px 0 #ab5414;
+  position: absolute;
+  z-index: 1;
+  display: block;
+  left: 0;
+  top:0;
+  width: attr(rating);
+  overflow: hidden;
+}
+
+
+
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:400,600,700);
+body { margin: 50px; text-align: center; font-family: 'Open Sans', sans-serif; background: #f2fbff; font-size: .6em;}
+
+
+</style>
+
+
+</head>
+
+<body>
+<h1>Feature Ratings</h1>
+
+<div class="star-ratings-css" title=".000"></div>
+<div class="star-ratings-css" title=".125"></div>
+<div class="star-ratings-css" title=".250"></div>
+<div class="star-ratings-css" title=".375"></div>
+<div class="star-ratings-css" title=".500"></div>
+<div class="star-ratings-css" title=".625"></div>
+<div class="star-ratings-css" title=".750"></div>
+<div class="star-ratings-css" title=".875"></div>
+<div class="star-ratings-css" title=".1000"></div>
+
+</body>
+</html>

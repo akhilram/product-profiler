@@ -1,0 +1,92 @@
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<link href="css/bootstrap.min.css" rel="stylesheet">
+<link href="css/main.css" rel="stylesheet">
+<script src="js/bootstrap.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.1/handlebars.min.js"></script>
+    <script id="rating-template" type="text/x-handlebars-template">
+		<h2>Ratings</h2>
+		{{#each items}}
+			<div class="row">
+				<div class="col-md-6">
+					{{feature}}
+				</div>
+				<div class="col-md-6">
+					<div class="row">
+						<div class="star-ratings-css" title="{{star}}"></div>
+					</div>
+				</div>
+			</div>
+		{{/each}}
+	</script>
+<script type = "application/javascript">
+    
+    
+    window.ratingTemplate = Handlebars.compile($("#rating-template").html());
+    Handlebars.registerHelper('ifTrue', function(v1, v2, options) {
+            if(v1 == v2) {
+                return options.fn(this);
+            }
+            return options.inverse(this);
+        });
+    
+    function submitToPHP(){
+        var form_data={'productid':'12345','features': ['watch','band']};
+    
+    $.ajax({
+			url: "get-rating.php",
+            data: form_data,
+			type: "GET",			
+			dataType: "json",
+            
+            success: function(output){
+                 processRatings(output);
+                
+                
+                
+            },
+            
+            error: function(output){
+                $("#result").text(output.error);
+            }
+		});
+        
+    }
+    
+    function processRatings(output) {
+        var output = addRatingNumber(output);
+        var result = ratingTemplate({items:output});
+        $("#rating").html(result);
+    }
+
+    function addRatingNumber(output) {
+        for(var i=0; i<output.length; i++) {
+            output[i].star = getStarNumber(output[i].rating);
+        }
+        return output;
+    }
+    function getStarNumber(rating) {
+        var temp = rating*2;
+        temp = Math.round(temp);
+        var stars = ['.000', '.125', '.250', '.375', '.500', '.625', '.750', '.875', '1.000', '1.125', '1.250'];
+        return stars[temp];
+    }
+</script>
+
+</head> 
+    
+<body><input type='button' onclick ='submitToPHP();'/>
+    
+    <div id='result'></div>
+    <div class="row">
+													<div id="rating" class="col-md-offset-3 col-md-6">
+
+													</div>
+												</div>
+    </body>
+
+
+</html>

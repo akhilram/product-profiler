@@ -12,7 +12,6 @@ import edu.stanford.nlp.process.CoreLabelTokenFactory;
 import edu.stanford.nlp.process.PTBTokenizer;
 import edu.stanford.nlp.process.Tokenizer;
 import edu.stanford.nlp.process.TokenizerFactory;
-import edu.stanford.nlp.trees.EnglishGrammaticalRelations;
 import edu.stanford.nlp.trees.GrammaticalStructure;
 import edu.stanford.nlp.trees.PennTreebankLanguagePack;
 import edu.stanford.nlp.trees.Tree;
@@ -56,26 +55,66 @@ public class DependencyTreeGenerator {
         
     }
     
-    private static Tree parse(String str) {                
-        List<CoreLabel> tokens = tokenize(str);
+    public Tree parse(String sentence) {                
+        List<CoreLabel> tokens = tokenize(sentence);
         Tree tree = parser.apply(tokens);
+        //System.out.println("\nPenn Parse Tree\n");
+        //tree.pennPrint();
         return tree;
     }
 
-    private static List<CoreLabel> tokenize(String str) {
-        Tokenizer<CoreLabel> tokenizer = tokenizerFactory.getTokenizer(new StringReader(str));    
+    private static List<CoreLabel> tokenize(String sentence) {
+        Tokenizer<CoreLabel> tokenizer = tokenizerFactory.getTokenizer(new StringReader(sentence));    
         return tokenizer.tokenize();
     }
     
-    public void getTypedDependencyTree(String sentence){
-        Tree tr = parse(sentence);
+    public DependencyTree getTypedDependencyTree(Tree tr){
+        
         TreebankLanguagePack languagePack = new PennTreebankLanguagePack();
         GrammaticalStructure structure = languagePack.grammaticalStructureFactory().newGrammaticalStructure(tr);
-        Collection<TypedDependency> typedDependencies = structure.typedDependenciesCollapsed();
-                
+        Collection<TypedDependency> typedDependencies = structure.typedDependencies();
+          
+        
+       DependencyTree depTree = new DependencyTree();
+       DependencyTreeNode target;
+       DependencyTreeNode source;
+       //System.out.println("\nTyped Dependencies\n");
        for(TypedDependency td : typedDependencies) {
             
-                System.out.println(td);
+                //System.out.println(td.reln().getShortName()+"-"+td.reln().getLongName() + " " + td.gov().word()+" "+td.gov().index()+" "+td.dep().word()+" "+td.dep().index() );
+                
+                
+                
+                if(depTree.getVertex(td.gov().index()) == null){
+                    source = new DependencyTreeNode(td.gov().index(), td.gov().word());
+                }
+                else{
+                    source = depTree.getVertex(td.gov().index());
+                }
+
+                if(depTree.getVertex(td.dep().index()) == null){
+                    target = new DependencyTreeNode(td.dep().index(), td.dep().word());
+                }
+                else{
+                    target = depTree.getVertex(td.dep().index());
+                }
+                
+                DependencyTreeEdge edge = new DependencyTreeEdge(td.reln().getShortName(), target);
+                source.addEgde(edge);
+                depTree.addVertex(source);
+                depTree.addVertex(target);
+                
+                
+                
         }
+       DependencyTreeNode rootNode = depTree.getVertex(0);
+       //System.out.println(rootNode.word);
+       DependencyTreeNode rootword = rootNode.edges.get(0).target;
+       //System.out.println("ROOT :"+rootword.word);
+       /*for(DependencyTreeEdge e : rootword.edges){
+           System.out.println(e.target.word);
+       }*/
+       
+       return depTree;
     }
 }
